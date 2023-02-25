@@ -1,0 +1,24 @@
+import socket
+
+HOST = '127.0.0.1'  # La dirección IP del servidor
+PORT = 1234  # El puerto en el que el servidor escuchará las conexiones
+
+# Crear el objeto de socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Vincular el socket al puerto y dirección IP
+s.bind((HOST, PORT))
+
+# Escuchar las conexiones entrantes
+s.listen()
+
+# Aceptar la conexión entrante
+conn, addr = s.accept()
+print('Conexión establecida desde', addr)
+
+# Recibir los datos enviados por el cliente
+data = conn.recv(1024)
+print('Datos recibidos:', data.decode())
+
+# Cerrar la conexión
+conn.close()
