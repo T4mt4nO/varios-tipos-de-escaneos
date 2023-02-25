@@ -1,0 +1,30 @@
+import socket
+import struct
+
+# Estructura de un paquete ICMP
+class ICMP:
+    def __init__(self, type, code, checksum, data):
+        self.type = type
+        self.code = code
+        self.checksum = checksum
+        self.data = data
+
+    # Función para calcular el checksum
+    def calculate_checksum(self):
+        # ...
+        return checksum
+
+    # Función para empaquetar el paquete ICMP
+    def pack(self):
+        # ...
+        return packet
+
+# Crear un socket raw
+s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
+
+# Crear un paquete ICMP malicioso
+icmp = ICMP(type=8, code=0, checksum=0, data=b'malicious data')
+packet = icmp.pack()
+
+# Enviar el paquete
+s.sendto(packet, ('192.168.1.1', 0))
