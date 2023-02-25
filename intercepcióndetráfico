@@ -1,0 +1,23 @@
+import socket
+import struct
+
+# Crear un socket raw
+s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003))
+
+# Leer los paquetes
+while True:
+    packet, address = s.recvfrom(65535)
+    eth_length = 14
+    eth_header = packet[:eth_length]
+    eth = struct.unpack('!6s6sH', eth_header)
+    ip_header = packet[eth_length:20+eth_length]
+    iph = struct.unpack('!BBHHHBBH4s4s', ip_header)
+    version_ihl = iph[0]
+    version = version_ihl >> 4
+    ihl = version_ihl & 0xF
+    iph_length = ihl * 4
+    ttl = iph[5]
+    protocol = iph[6]
+    s_addr = socket.inet_ntoa(iph[8])
+    d_addr = socket.inet_ntoa(iph[9])
+    print(f'Source IP: {s_addr}, Destination IP: {d_addr}, Protocol: {protocol}')
